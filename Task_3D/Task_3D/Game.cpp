@@ -1,8 +1,9 @@
 #include "Game.h"
+#include "Load.h"
 #include "Input.h"
-#include "Scene.h"
-#include "Play.h"
-#include "Icon.h"
+#include "Scene\Scene.h"
+#include "Scene\Title.h"
+#include "Icon\Icon.h"
 #include "Typedef.h"
 #include "DxLib.h"
 
@@ -24,6 +25,9 @@ void Game::Init(void)
 
 	//true:window　false:ﾌﾙｽｸﾘｰﾝ
 	ChangeWindowMode(true);
+
+	// アイコンセット
+	SetWindowIconID(ICON_ID);
 
 	// 非同期にセット
 	SetUseASyncLoadFlag(TRUE);
@@ -55,8 +59,9 @@ void Game::ChangeScene(Scene * scene)
 // クラスの生成
 void Game::Create(void)
 {
+	Load::Create();
 	in = std::make_shared<Input>();
-	ChangeScene(new Play(in));
+	ChangeScene(new Title(in));
 }
 
 // 描画
@@ -93,5 +98,6 @@ void Game::Accept(void)
 // 終了
 void Game::End(void)
 {
+	Load::Destroy();
 	DxLib_End();
 }

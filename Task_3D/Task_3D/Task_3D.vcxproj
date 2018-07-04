@@ -125,17 +125,25 @@
   <ItemGroup>
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Input.cpp" />
+    <ClCompile Include="Load.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="Play.cpp" />
-    <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="Scene\Play.cpp" />
+    <ClCompile Include="Scene\Scene.cpp" />
+    <ClCompile Include="Scene\Title.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
-    <ClInclude Include="Icon.h" />
+    <ClInclude Include="Icon\Icon.h" />
     <ClInclude Include="Input.h" />
-    <ClInclude Include="Play.h" />
-    <ClInclude Include="Scene.h" />
+    <ClInclude Include="Load.h" />
+    <ClInclude Include="Scene\Play.h" />
+    <ClInclude Include="Scene\Scene.h" />
+    <ClInclude Include="Scene\Title.h" />
     <ClInclude Include="Typedef.h" />
+    <ClInclude Include="Vector3.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Icon\Icon.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
