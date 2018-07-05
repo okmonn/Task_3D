@@ -21,8 +21,6 @@ Title::~Title()
 // •`‰æ
 void Title::Draw(void)
 {
-	SetCamera({ 0.0f, 15.0f, -25.0f }, { 0.0f, 10.0f, 0.0f }, 60.0f, 0.5f, 300.0f);
-
 	MV1DrawModel(model);
 }
 

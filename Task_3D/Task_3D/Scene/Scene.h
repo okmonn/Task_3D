@@ -19,9 +19,6 @@ public:
 	virtual void UpData(void) = 0;
 
 protected:
-	// カメラのセット
-	void SetCamera(const Vec3f& position, const Vec3f& target, float fov, float min, float max);
-
 	// 行列のセット
 	void SetMatrix(int model, const Vec3f& scal, float angle, const Vec3f& position);
 

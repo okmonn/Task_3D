@@ -1,6 +1,7 @@
 #include "Game.h"
 #include "Load.h"
 #include "Input.h"
+#include "Camera.h"
 #include "Scene\Scene.h"
 #include "Scene\Title.h"
 #include "Icon\Icon.h"
@@ -65,6 +66,7 @@ void Game::Create(void)
 {
 	Load::Create();
 	in = std::make_shared<Input>();
+	cam = std::make_shared<Camera>();
 	ChangeScene(new Title(in));
 }
 
@@ -86,6 +88,7 @@ void Game::UpData(void)
 	Draw();
 
 	in->UpData();
+	cam->UpData();
 	scene->UpData();
 }
 
