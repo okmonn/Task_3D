@@ -1,4 +1,5 @@
 #include "Scene.h"
+#include "../Typedef.h"
 #include "DxLib.h"
 
 // コンストラクタ
@@ -12,11 +13,23 @@ Scene::~Scene()
 {
 }
 
-// Zバッファのセット
-void Scene::SetZBuffer(bool flag1, bool flag2)
+// カメラのセット
+void Scene::SetCamera(const Vec3f & position, const Vec3f & target, float fov, float min, float max)
 {
-	//Zバッファの有効
-	SetUseZBuffer3D(flag1);
-	//Ｚバッファへの書き込みの有効
-	SetWriteZBuffer3D(flag2);
+	//カメラセット
+	SetCameraPositionAndTarget_UpVecY(VGet(position.x, position.y, position.z), VGet(target.x, target.y, target.z));
+	//遠近法カメラのセット
+	SetupCamera_Perspective(RAD(fov));
+	//カメラのニアファーのセット
+	SetCameraNearFar(min, max);
+}
+
+// 行列のセット
+void Scene::SetMatrix(int model, const Vec3f& scal, float angle, const Vec3f& position)
+{
+	// 拡大、回転、移動の順番
+	MV1SetMatrix(model, MMult(MMult(
+		MGetScale(VGet(scal.x, scal.y, scal.z)),
+		MGetRotY(RAD(angle))),
+		MGetTranslate(VGet(position.x, position.y, position.z))));
 }

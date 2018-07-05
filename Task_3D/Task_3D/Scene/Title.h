@@ -18,6 +18,6 @@ public:
 
 private:
 	// ‰æ‘œƒf[ƒ^
-	int image;
+	int model;
 };
 

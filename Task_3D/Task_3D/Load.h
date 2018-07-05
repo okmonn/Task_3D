@@ -20,6 +20,9 @@ public:
 	// 画像の読み込み
 	int LoadImg(std::string fileName);
 
+	// モデルの読み込み
+	int LoadModel(std::string fileName);
+
 private:
 	// コンストラクタ
 	Load();
@@ -37,4 +40,7 @@ private:
 
 	// 画像データ
 	std::map<std::string, int>image;
+
+	// モデルデータ
+	std::map<std::string, int>model;
 };

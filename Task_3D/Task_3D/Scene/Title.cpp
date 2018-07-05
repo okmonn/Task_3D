@@ -10,7 +10,7 @@
 Title::Title(std::weak_ptr<Input>in)
 {
 	this->in = in;
-	image = Load::Get()->LoadImg("img/iq.png");
+	model = Load::Get()->LoadModel("model/Alicia/Alicia_solid.pmx");
 }
 
 // デストラクタ
@@ -21,16 +21,15 @@ Title::~Title()
 // 描画
 void Title::Draw(void)
 {
-	DrawGraph(0, 0, image, true);
+	SetCamera({ 0.0f, 15.0f, -25.0f }, { 0.0f, 10.0f, 0.0f }, 60.0f, 0.5f, 300.0f);
 
-	SetZBuffer();
-	DrawSphere3D(VGet(WINDOW_X / 2, WINDOW_Y / 2, 0), 100.0f, 32, GetColor(255, 255, 128), GetColor(255, 255, 255), true);
+	MV1DrawModel(model);
 }
 
 // 処理
 void Title::UpData(void)
 {
-	if (in.lock()->CheckTrigger(PAD_INPUT_A) == true)
+	if (in.lock()->CheckTrigger(PAD_INPUT_8) == true)
 	{
 		Game::Get().ChangeScene(new Play(in));
 	}

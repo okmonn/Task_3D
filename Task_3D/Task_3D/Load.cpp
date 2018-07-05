@@ -50,6 +50,25 @@ int Load::LoadImg(std::string fileName)
 	return 0;
 }
 
+// モデルの読み込み
+int Load::LoadModel(std::string fileName)
+{
+	if (model.find(fileName) != model.end())
+	{
+		return MV1DuplicateModel(model[fileName]);
+	}
+	else
+	{
+		return model[fileName] = MV1LoadModel(fileName.c_str());
+		if (model[fileName] != -1)
+		{
+			return MV1DuplicateModel(model[fileName]);
+		}
+	}
+
+	return 0;
+}
+
 // リセット
 void Load::Reset(void)
 {
@@ -58,5 +77,10 @@ void Load::Reset(void)
 		DeleteGraph(itr->second);
 	}
 	image.clear();
+	for (auto itr = model.begin(); itr != model.end(); ++itr)
+	{
+		MV1DeleteModel(itr->second);
+	}
+	model.clear();
 }
 

@@ -1,4 +1,5 @@
 #pragma once
+#include "../Vector3.h"
 #include <memory>
 
 class Input;
@@ -11,9 +12,6 @@ public:
 	// デストラクタ
 	virtual ~Scene();
 
-	// Zバッファのセット
-	void SetZBuffer(bool flag1 = true, bool flag2 = true);
-
 	// 描画
 	virtual void Draw(void) = 0;
 
@@ -21,6 +19,13 @@ public:
 	virtual void UpData(void) = 0;
 
 protected:
+	// カメラのセット
+	void SetCamera(const Vec3f& position, const Vec3f& target, float fov, float min, float max);
+
+	// 行列のセット
+	void SetMatrix(int model, const Vec3f& scal, float angle, const Vec3f& position);
+
+
 	// インプット
 	std::weak_ptr<Input>in;
 

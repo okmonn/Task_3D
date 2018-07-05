@@ -29,19 +29,23 @@ void Game::Init(void)
 	// アイコンセット
 	SetWindowIconID(ICON_ID);
 
-	// 非同期にセット
-	SetUseASyncLoadFlag(TRUE);
-
 	//windowテキストの設定
 	SetWindowText(_T("1601271_岡繁男"));
-
-	//SetWindowIconID(100);
 
 	//Dxlibの初期化
 	if (DxLib_Init() == -1)
 	{
 		return;
 	}
+
+	// 非同期にセット
+	SetUseASyncLoadFlag(true);
+
+	//Zバッファの有効
+	SetUseZBuffer3D(true);
+
+	//Ｚバッファへの書き込みの有効
+	SetWriteZBuffer3D(true);
 
 	//ひとまずﾊﾞｯｸﾊﾞｯﾌｧに描画
 	SetDrawScreen(DX_SCREEN_BACK);
