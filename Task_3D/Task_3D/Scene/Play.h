@@ -1,6 +1,8 @@
 #pragma once
 #include "Scene.h"
 
+class Player;
+
 class Play :
 	public Scene
 {
@@ -17,6 +19,11 @@ public:
 	void UpData(void);
 
 private:
+	// クラスの生成
+	void Create(void);
 
+
+	// プレイヤー
+	std::shared_ptr<Player>pl;
 };
 

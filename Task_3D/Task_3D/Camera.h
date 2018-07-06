@@ -1,11 +1,15 @@
 #pragma once
 #include "Vector3.h"
+#include <memory>
+
+class Input;
 
 class Camera
 {
 public:
 	// コンストラクタ
 	Camera();
+	Camera(std::weak_ptr<Input>in);
 	// デストラクタ
 	~Camera();
 
@@ -67,6 +71,9 @@ public:
 	}
 
 private:
+	// インプット
+	std::weak_ptr<Input>in;
+
 	// 座標
 	Vec3f pos;
 

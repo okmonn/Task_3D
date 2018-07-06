@@ -17,7 +17,5 @@ public:
 	void UpData(void);
 
 private:
-	// ‰æ‘œƒf[ƒ^
-	int model;
 };
 

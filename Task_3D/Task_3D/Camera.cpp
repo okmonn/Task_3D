@@ -1,9 +1,21 @@
 #include "Camera.h"
+#include "Input.h"
 #include "Typedef.h"
 #include "DxLib.h"
 
 // コンストラクタ
 Camera::Camera()
+{
+	pos = 0.0f;
+	target = 0.0f;
+	min = 0.0f;
+	max = 0.0f;
+
+	SetCamera({ 0.0f, 15.0f, -25.0f }, { 0.0f, 10.0f, 0.0f }, 60.0f, 0.5f, 300.0f);
+}
+
+// コンストラクタ
+Camera::Camera(std::weak_ptr<Input> in) : in(in)
 {
 	pos = 0.0f;
 	target = 0.0f;
