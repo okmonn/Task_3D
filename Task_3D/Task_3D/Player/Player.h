@@ -61,6 +61,9 @@ public:
 	}
 
 private:
+	// 状態のセット
+	void SetMode(int i);
+
 	// 画面内の確認
 	bool CheckIn(void);
 
@@ -91,6 +94,9 @@ private:
 
 	// 角度
 	float angle;
+
+	// 移動速度
+	float speed;
 
 	// 配列番号
 	int index;

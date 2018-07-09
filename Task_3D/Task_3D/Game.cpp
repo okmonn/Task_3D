@@ -51,6 +51,7 @@ void Game::Init(void)
 	//ひとまずﾊﾞｯｸﾊﾞｯﾌｧに描画
 	SetDrawScreen(DX_SCREEN_BACK);
 
+	//ライトのセット
 	SetLightEnable(false);
 	SetUseLighting(false);
 

@@ -7,11 +7,12 @@
 // コンストラクタ
 Player::Player(std::weak_ptr<Input>in) : in(in)
 {
-	model = Load::Get()->LoadModel("model/Alicia/Alicia_solid.pmx");
+	model = Load::Get()->LoadModel("model/PPK/ポプ子.pmx");
 	pos = 0.0f;
 	lpos = pos;
 	scale = 1.0f;
 	angle = 0.0f;
+	speed = 0.5f;
 	index = 0;
 	animTime = 0.0f;
 }
@@ -31,6 +32,7 @@ void Player::Draw(void)
 	}
 
 #ifdef _DEBUG
+	DrawFormatString(250, 250, GetColor(255, 0, 0), "%f", animTime);
 #endif
 }
 
@@ -43,26 +45,47 @@ void Player::UpData(void)
 	if (in.lock()->CheckPress(PAD_INPUT_RIGHT) == true)
 	{
 		angle = 270.0f;
-		pos.x += 0.5f;
-		
+		pos.x += speed;
+		SetMode(1);
 	}
 	else if (in.lock()->CheckPress(PAD_INPUT_LEFT) == true)
 	{
 		angle = 90.0f;
-		pos.x -= 0.5f;
+		pos.x -= speed;
+		SetMode(1);
 	}
 	else if (in.lock()->CheckPress(PAD_INPUT_UP) == true)
 	{
 		angle = 180.0f;
-		pos.z += 0.5f;
+		pos.z += speed;
+		SetMode(1);
 	}
 	else if (in.lock()->CheckPress(PAD_INPUT_DOWN) == true)
 	{
 		angle = 0.0f;
-		pos.z -= 0.5f;
+		pos.z -= speed;
+		SetMode(1);
+	}
+	else if (in.lock()->CheckTrigger(PAD_INPUT_8) == true)
+	{
+		SetMode(1);
 	}
 
 	SetMatrix(model, scale, RAD(angle), pos);
+}
+
+// 状態のセット
+void Player::SetMode(int i)
+{
+	if (index == 1)
+	{
+		return;
+	}
+	int n = 0;
+	n = MV1DetachAnim(model, index);
+	index = i;
+	animTime = 0.0f;
+	n = MV1AttachAnim(model, index, -1, 0);
 }
 
 // 画面内の確認
@@ -87,11 +110,12 @@ void Player::SetLocalPos(void)
 // アニメーション管理
 void Player::Animator(void)
 {
-	++animTime;
+	animTime += 0.5f;
 	if (animTime > MV1GetAttachAnimTotalTime(model, index))
 	{
 		animTime = 0.0f;
 	}
+	MV1SetAttachAnimTime(model, index, animTime);
 }
 
 // 行列のセット
