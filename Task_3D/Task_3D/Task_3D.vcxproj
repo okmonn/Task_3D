@@ -132,9 +132,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Cube\Cube.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Load.cpp" />
+    <ClCompile Include="Loading\Loading.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Player\Player.cpp" />
     <ClCompile Include="Scene\Play.cpp" />
@@ -143,10 +145,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Cube\Cube.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Icon\Icon.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Load.h" />
+    <ClInclude Include="Loading\Loading.h" />
     <ClInclude Include="Player\Player.h" />
     <ClInclude Include="Scene\Play.h" />
     <ClInclude Include="Scene\Scene.h" />

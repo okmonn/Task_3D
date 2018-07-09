@@ -46,3 +46,9 @@ void Scene::DrawRectRotaGraph(const Image & image, bool revrse)
 		image.size.x / 2, image.size.y / 2,
 		(double)image.large, 0.0, image.image, true, revrse);
 }
+
+// ボックスの描画
+void Scene::DrawBox(const Vec2 & pos, const Vec2 & size, unsigned int color, bool fill)
+{
+	DxLib::DrawBox(pos.x, pos.y, pos.x + size.x, pos.y + size.y, color, fill);
+}

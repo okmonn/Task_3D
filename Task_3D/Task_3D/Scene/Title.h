@@ -17,5 +17,14 @@ public:
 	void UpData(void);
 
 private:
+	// フェードイン
+	void FadeIn(void);
+
+	// フェードアウト
+	void FadeOut(void);
+
+
+	// 関数ポインタ
+	void (Title::*func)(void);
 };
 

@@ -42,6 +42,9 @@ protected:
 	// 描画
 	void DrawRectRotaGraph(const Image& image, bool reverse = false);
 
+	// ボックスの描画
+	void DrawBox(const Vec2 & pos, const Vec2 & size, unsigned int color, bool fill = true);
+
 
 	// インプット
 	std::weak_ptr<Input>in;

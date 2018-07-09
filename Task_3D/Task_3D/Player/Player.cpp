@@ -9,8 +9,11 @@ Player::Player(std::weak_ptr<Input>in) : in(in)
 {
 	model = Load::Get()->LoadModel("model/Alicia/Alicia_solid.pmx");
 	pos = 0.0f;
+	lpos = pos;
 	scale = 1.0f;
 	angle = 0.0f;
+	index = 0;
+	animTime = 0.0f;
 }
 
 // デストラクタ
@@ -22,13 +25,21 @@ Player::~Player()
 // 描画
 void Player::Draw(void)
 {
-	MV1DrawModel(model);
-	DrawFormatString(250, 250, GetColor(255, 0, 0), "%f", angle);
+	if (CheckIn() == true)
+	{
+		MV1DrawModel(model);
+	}
+
+#ifdef _DEBUG
+#endif
 }
 
 // 処理
 void Player::UpData(void)
 {
+	SetLocalPos();
+	Animator();
+
 	if (in.lock()->CheckPress(PAD_INPUT_RIGHT) == true)
 	{
 		angle = 270.0f;
@@ -52,6 +63,35 @@ void Player::UpData(void)
 	}
 
 	SetMatrix(model, scale, RAD(angle), pos);
+}
+
+// 画面内の確認
+bool Player::CheckIn(void)
+{
+	if (lpos.x > 0 && lpos.x < WINDOW_X)
+	{
+		return true;
+	}
+
+	return false;
+}
+
+// ローカル座標のセット
+void Player::SetLocalPos(void)
+{
+	lpos.x = ConvWorldPosToScreenPos(VGet(pos.x, pos.y, pos.z)).x;
+	lpos.y = ConvWorldPosToScreenPos(VGet(pos.x, pos.y, pos.z)).y;
+	lpos.z = ConvWorldPosToScreenPos(VGet(pos.x, pos.y, pos.z)).z;
+}
+
+// アニメーション管理
+void Player::Animator(void)
+{
+	++animTime;
+	if (animTime > MV1GetAttachAnimTotalTime(model, index))
+	{
+		animTime = 0.0f;
+	}
 }
 
 // 行列のセット

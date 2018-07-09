@@ -1,4 +1,5 @@
 #pragma once
+#include "../Vector2.h"
 #include "../Vector3.h"
 #include <memory>
 
@@ -27,6 +28,15 @@ public:
 		this->pos = pos;
 	}
 
+	// ローカル座標の取得
+	Vec3f GetLocalPos(void) const {
+		return lpos;
+	}
+	// ローカル座標のセット
+	void SetLocalPos(const Vec3f& pos) {
+		lpos = pos;
+	}
+
 	// 拡大率の取得
 	Vec3f GetScale(void) const {
 		return scale;
@@ -45,7 +55,21 @@ public:
 		angle = i;
 	}
 
+	// モデルハンドルの取得
+	constexpr int GetModelHandle(void) const {
+		return model;
+	}
+
 private:
+	// 画面内の確認
+	bool CheckIn(void);
+
+	// ローカル座標のセット
+	void SetLocalPos(void);
+
+	// アニメーション管理
+	void Animator(void);
+
 	// 行列のセット
 	void SetMatrix(int model, const Vec3f& scale, float angle, const Vec3f& position);
 
@@ -59,10 +83,19 @@ private:
 	// 座標
 	Vec3f pos;
 
+	// ローカル座標
+	Vec3f lpos;
+
 	// 拡大率
 	Vec3f scale;
 
 	// 角度
 	float angle;
+
+	// 配列番号
+	int index;
+
+	// アニメーションフレーム
+	float animTime;
 };
 

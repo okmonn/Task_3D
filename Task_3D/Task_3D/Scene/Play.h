@@ -2,6 +2,7 @@
 #include "Scene.h"
 
 class Player;
+class Loading;
 
 class Play :
 	public Scene
@@ -22,8 +23,23 @@ private:
 	// クラスの生成
 	void Create(void);
 
+	// フェードイン
+	void FadeIn(void);
+
+	// フェードアウト
+	void FadeOut(void);
+
+	// 処理
+	void Run(void);
+
 
 	// プレイヤー
 	std::shared_ptr<Player>pl;
+
+	// ローディング
+	std::shared_ptr<Loading>load;
+
+	// 関数ポインタ
+	void (Play::*func)(void);
 };
 

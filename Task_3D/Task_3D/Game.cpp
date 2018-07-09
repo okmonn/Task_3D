@@ -51,6 +51,9 @@ void Game::Init(void)
 	//‚Ð‚Æ‚Ü‚¸ÊÞ¯¸ÊÞ¯Ì§‚É•`‰æ
 	SetDrawScreen(DX_SCREEN_BACK);
 
+	SetLightEnable(false);
+	SetUseLighting(false);
+
 	Create();
 }
 
