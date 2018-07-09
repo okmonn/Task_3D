@@ -13,8 +13,11 @@ Player::Player(std::weak_ptr<Input>in) : in(in)
 	scale = 1.0f;
 	angle = 0.0f;
 	speed = 0.5f;
-	index = 0;
+	attach = 0;
+	flam = 0.0f;
 	animTime = 0.0f;
+	func = &Player::LoadUpData;
+	mode = &Player::Wait;
 }
 
 // デストラクタ
@@ -39,53 +42,16 @@ void Player::Draw(void)
 // 処理
 void Player::UpData(void)
 {
-	SetLocalPos();
-	Animator();
-
-	if (in.lock()->CheckPress(PAD_INPUT_RIGHT) == true)
-	{
-		angle = 270.0f;
-		pos.x += speed;
-		SetMode(1);
-	}
-	else if (in.lock()->CheckPress(PAD_INPUT_LEFT) == true)
-	{
-		angle = 90.0f;
-		pos.x -= speed;
-		SetMode(1);
-	}
-	else if (in.lock()->CheckPress(PAD_INPUT_UP) == true)
-	{
-		angle = 180.0f;
-		pos.z += speed;
-		SetMode(1);
-	}
-	else if (in.lock()->CheckPress(PAD_INPUT_DOWN) == true)
-	{
-		angle = 0.0f;
-		pos.z -= speed;
-		SetMode(1);
-	}
-	else if (in.lock()->CheckTrigger(PAD_INPUT_8) == true)
-	{
-		SetMode(1);
-	}
-
-	SetMatrix(model, scale, RAD(angle), pos);
+	(this->*func)();
 }
 
 // 状態のセット
 void Player::SetMode(int i)
 {
-	if (index == 1)
-	{
-		return;
-	}
-	int n = 0;
-	n = MV1DetachAnim(model, index);
-	index = i;
-	animTime = 0.0f;
-	n = MV1AttachAnim(model, index, -1, 0);
+	MV1DetachAnim(model, attach);
+	flam = 0.0f;
+	attach = MV1AttachAnim(model, i, -1, 0);
+	animTime = MV1GetAttachAnimTotalTime(model, attach);
 }
 
 // 画面内の確認
@@ -110,12 +76,12 @@ void Player::SetLocalPos(void)
 // アニメーション管理
 void Player::Animator(void)
 {
-	animTime += 0.5f;
-	if (animTime > MV1GetAttachAnimTotalTime(model, index))
+	flam += 0.5f;
+	if (flam > animTime)
 	{
-		animTime = 0.0f;
+		flam = 0.0f;
 	}
-	MV1SetAttachAnimTime(model, index, animTime);
+	MV1SetAttachAnimTime(model, attach, flam);
 }
 
 // 行列のセット
@@ -126,4 +92,66 @@ void Player::SetMatrix(int model, const Vec3f & scale, float angle, const Vec3f 
 		MGetScale(VGet(scale.x, scale.y, scale.z)),
 		MGetRotY((angle))),
 		MGetTranslate(VGet(position.x, position.y, position.z))));
+}
+
+// 読み込み中の処理
+void Player::LoadUpData(void)
+{
+	if (CheckHandleASyncLoad(model) == FALSE)
+	{
+		SetMode(0);
+		func = &Player::NormalUpData;
+	}
+}
+
+// 読み込み終わりの処理
+void Player::NormalUpData(void)
+{
+	SetLocalPos();
+	Animator();
+
+	(this->*mode)();
+
+	SetMatrix(model, scale, RAD(angle), pos);
+}
+
+// 待機
+void Player::Wait(void)
+{
+	if (in.lock()->CheckPress(PAD_INPUT_RIGHT) == true || in.lock()->CheckPress(PAD_INPUT_LEFT) == true
+		|| in.lock()->CheckPress(PAD_INPUT_UP) == true || in.lock()->CheckPress(PAD_INPUT_DOWN) == true)
+	{
+		SetMode(1);
+		mode = &Player::Walk;
+	}
+}
+
+// 歩き
+void Player::Walk(void)
+{
+	if (in.lock()->CheckPress(PAD_INPUT_RIGHT) == true)
+	{
+		angle = 270.0f;
+		pos.x += speed;
+	}
+	else if (in.lock()->CheckPress(PAD_INPUT_LEFT) == true)
+	{
+		angle = 90.0f;
+		pos.x -= speed;
+	}
+	else if (in.lock()->CheckPress(PAD_INPUT_UP) == true)
+	{
+		angle = 180.0f;
+		pos.z += speed;
+	}
+	else if (in.lock()->CheckPress(PAD_INPUT_DOWN) == true)
+	{
+		angle = 0.0f;
+		pos.z -= speed;
+	}
+	else 
+	{
+		SetMode(0);
+		mode = &Player::Wait;
+	}
 }

@@ -76,6 +76,18 @@ private:
 	// 行列のセット
 	void SetMatrix(int model, const Vec3f& scale, float angle, const Vec3f& position);
 
+	// 読み込み中の処理
+	void LoadUpData(void);
+
+	// 読み込み終わりの処理
+	void NormalUpData(void);
+
+	// 待機
+	void Wait(void);
+
+	// 歩き
+	void Walk(void);
+
 
 	// インプット
 	std::weak_ptr<Input>in;
@@ -98,10 +110,17 @@ private:
 	// 移動速度
 	float speed;
 
-	// 配列番号
-	int index;
+	// アタッチ番号
+	int attach;
+
+	// フレーム
+	float flam;
 
 	// アニメーションフレーム
 	float animTime;
+
+	// 関数ポインタ
+	void (Player::*func)(void);
+	void (Player::*mode)(void);
 };
 
