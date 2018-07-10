@@ -1,10 +1,10 @@
 #include "Play.h"
 #include "../Game.h"
 #include "../Input.h"
+#include "../Cube/Cube.h"
 #include "../Player/Player.h"
 #include "../Loading/Loading.h"
 #include "../Typedef.h"
-#include "DxLib.h"
 
 #define ALPHA_MAX 255
 
@@ -27,25 +27,23 @@ Play::~Play()
 // ÉNÉâÉXÇÃê∂ê¨
 void Play::Create(void)
 {
-	pl = std::make_shared<Player>(in);
-	load = std::make_shared<Loading>(pl);
+	cube.reset(new Cube());
+	pl.reset(new Player(in));
+	load.reset(new Loading(pl));
 }
 
 // ï`âÊ
 void Play::Draw(void)
 {
-	for (int z = -1; z < 9; ++z)
+	if (load->GetFlag() == false)
 	{
-		for (int x = -3; x < 3; ++x)
-		{
-			DrawCube3D(VGet(-5.0f + 2 * (5.0f + 0.1f) * x, 0.0f, -5.0f * z),
-				VGet(5.0f + 2 * (5.0f + 0.1f) * x, -2.0f * 5.0f, 5.0f * z),
-				GetColor(255, 255, 0), 0xffffff, true);
-		}
+		load->Draw();
 	}
-	pl->Draw();
-	load->Draw();
-
+	else
+	{
+		cube->Draw();
+		pl->Draw();
+	}
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
 	DrawBox({ 0, 0 }, { WINDOW_X, WINDOW_Y }, GetColor(0, 0, 0));
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
@@ -91,5 +89,6 @@ void Play::Run(void)
 		return;
 	}
 
+	cube->UpData();
 	pl->UpData();
 }

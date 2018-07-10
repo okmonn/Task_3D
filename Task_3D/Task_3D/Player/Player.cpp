@@ -4,18 +4,28 @@
 #include "../Typedef.h"
 #include "DxLib.h"
 
+// アニメーション速度
+#define ANIM_SPEED 0.5f;
+
+// 移動速度
+#define WALK_SPEED 0.5f;
+
 // コンストラクタ
 Player::Player(std::weak_ptr<Input>in) : in(in)
 {
+	Reset();
+	SetMode();
+
 	model = Load::Get()->LoadModel("model/PPK/ポプ子.pmx");
 	pos = 0.0f;
 	lpos = pos;
 	scale = 1.0f;
 	angle = 0.0f;
-	speed = 0.5f;
+	speed = WALK_SPEED;
 	attach = 0;
 	flam = 0.0f;
 	animTime = 0.0f;
+
 	func = &Player::LoadUpData;
 	mode = &Player::Wait;
 }
@@ -24,6 +34,7 @@ Player::Player(std::weak_ptr<Input>in) : in(in)
 Player::~Player()
 {
 	MV1DeleteModel(model);
+	Reset();
 }
 
 // 描画
@@ -35,7 +46,7 @@ void Player::Draw(void)
 	}
 
 #ifdef _DEBUG
-	DrawFormatString(250, 250, GetColor(255, 0, 0), "%f", animTime);
+	DrawFormatString(10, GetFontSize(), GetColor(255, 0, 0), "%s", st.c_str());
 #endif
 }
 
@@ -45,13 +56,21 @@ void Player::UpData(void)
 	(this->*func)();
 }
 
+// 状態要素のセット
+void Player::SetMode(void)
+{
+	stata["wait"] = 0;
+	stata["walk"] = 1;
+}
+
 // 状態のセット
-void Player::SetMode(int i)
+void Player::SetMode(std::string stata)
 {
 	MV1DetachAnim(model, attach);
 	flam = 0.0f;
-	attach = MV1AttachAnim(model, i, -1, 0);
+	attach = MV1AttachAnim(model, this->stata[stata], -1, 0);
 	animTime = MV1GetAttachAnimTotalTime(model, attach);
+	st = stata;
 }
 
 // 画面内の確認
@@ -73,10 +92,21 @@ void Player::SetLocalPos(void)
 	lpos.z = ConvWorldPosToScreenPos(VGet(pos.x, pos.y, pos.z)).z;
 }
 
+// アニメーションの終了確認
+bool Player::CheckAnimEnd(void)
+{
+	if (flam >= animTime)
+	{
+		return true;
+	}
+
+	return false;
+}
+
 // アニメーション管理
 void Player::Animator(void)
 {
-	flam += 0.5f;
+	flam += ANIM_SPEED;
 	if (flam > animTime)
 	{
 		flam = 0.0f;
@@ -99,7 +129,8 @@ void Player::LoadUpData(void)
 {
 	if (CheckHandleASyncLoad(model) == FALSE)
 	{
-		SetMode(0);
+		SetMode("wait");
+		mode = &Player::Wait;
 		func = &Player::NormalUpData;
 	}
 }
@@ -121,7 +152,7 @@ void Player::Wait(void)
 	if (in.lock()->CheckPress(PAD_INPUT_RIGHT) == true || in.lock()->CheckPress(PAD_INPUT_LEFT) == true
 		|| in.lock()->CheckPress(PAD_INPUT_UP) == true || in.lock()->CheckPress(PAD_INPUT_DOWN) == true)
 	{
-		SetMode(1);
+		SetMode("walk");
 		mode = &Player::Walk;
 	}
 }
@@ -151,7 +182,13 @@ void Player::Walk(void)
 	}
 	else 
 	{
-		SetMode(0);
+		SetMode("wait");
 		mode = &Player::Wait;
 	}
+}
+
+// リセット
+void Player::Reset(void)
+{
+	stata.clear();
 }

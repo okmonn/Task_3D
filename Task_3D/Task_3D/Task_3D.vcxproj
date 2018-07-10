@@ -135,6 +135,7 @@
     <ClCompile Include="Cube\Cube.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Input.cpp" />
+    <ClCompile Include="Light\Light.cpp" />
     <ClCompile Include="Load.cpp" />
     <ClCompile Include="Loading\Loading.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -149,6 +150,7 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="Icon\Icon.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="Light\Light.h" />
     <ClInclude Include="Load.h" />
     <ClInclude Include="Loading\Loading.h" />
     <ClInclude Include="Player\Player.h" />

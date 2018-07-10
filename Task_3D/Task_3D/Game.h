@@ -2,6 +2,7 @@
 #include <memory>
 
 class Input;
+class Light;
 class Camera;
 class Scene;
 
@@ -51,6 +52,9 @@ private:
 
 	// インプット
 	std::shared_ptr<Input>in;
+
+	// ライト
+	std::shared_ptr<Light>light;
 
 	// カメラ
 	std::shared_ptr<Camera>cam;

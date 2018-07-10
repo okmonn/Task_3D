@@ -2,6 +2,8 @@
 #include "../Vector2.h"
 #include "../Vector3.h"
 #include <memory>
+#include <map>
+#include <string>
 
 class Input;
 
@@ -60,15 +62,24 @@ public:
 		return model;
 	}
 
+	// 状態の取得
+	std::string GetStata(void) const {
+		return st;
+	}
+
 private:
 	// 状態のセット
-	void SetMode(int i);
+	void SetMode(void);
+	void SetMode(std::string stata);
 
 	// 画面内の確認
 	bool CheckIn(void);
 
 	// ローカル座標のセット
 	void SetLocalPos(void);
+
+	// アニメーションの終了確認
+	bool CheckAnimEnd(void);
 
 	// アニメーション管理
 	void Animator(void);
@@ -87,6 +98,9 @@ private:
 
 	// 歩き
 	void Walk(void);
+
+	// リセット
+	void Reset(void);
 
 
 	// インプット
@@ -118,6 +132,12 @@ private:
 
 	// アニメーションフレーム
 	float animTime;
+
+	// 状態
+	std::map<std::string, int>stata;
+
+	// 状態
+	std::string st;
 
 	// 関数ポインタ
 	void (Player::*func)(void);

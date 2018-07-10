@@ -1,6 +1,7 @@
 #include "Game.h"
 #include "Load.h"
 #include "Input.h"
+#include "Light\Light.h"
 #include "Camera.h"
 #include "Scene\Scene.h"
 #include "Scene\Title.h"
@@ -51,9 +52,12 @@ void Game::Init(void)
 	//ひとまずﾊﾞｯｸﾊﾞｯﾌｧに描画
 	SetDrawScreen(DX_SCREEN_BACK);
 
-	//ライトのセット
-	SetLightEnable(false);
-	SetUseLighting(false);
+	//ライティング計算の有効
+	SetUseLighting(true);
+
+	//標準ライトの有効
+	SetLightEnable(true);
+
 
 	Create();
 }
@@ -70,6 +74,7 @@ void Game::Create(void)
 {
 	Load::Create();
 	in = std::make_shared<Input>();
+	light = std::make_shared<Light>();
 	cam = std::make_shared<Camera>();
 	ChangeScene(new Title(in));
 }

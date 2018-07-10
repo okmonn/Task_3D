@@ -1,6 +1,7 @@
 #pragma once
 #include "Scene.h"
 
+class Cube;
 class Player;
 class Loading;
 
@@ -32,6 +33,9 @@ private:
 	// 処理
 	void Run(void);
 
+
+	// キューブ
+	std::shared_ptr<Cube>cube;
 
 	// プレイヤー
 	std::shared_ptr<Player>pl;
