@@ -34,7 +34,7 @@ void Cube::Draw(void)
 		}
 	}*/
 
-	int n = DrawPolygon3D(vertex.data(), vertex.size() / 3, image, true);
+	int n = DrawPolygonIndexed3D(vertex.data(), (int)vertex.size(), index.data(), (int)vertex.size() / 2, image, true);
 }
 
 // 処理
@@ -65,9 +65,13 @@ void Cube::SetVertex(const Vec3f & pos, const Vec3f & normal, const COLOR_U8 & d
 // 頂点のセット
 void Cube::VertexInit(void)
 {
+	//左上
 	SetVertex({ -5, 10, 0 }, { 0.0f, 0.0f, -1.0f }, GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), { 0.0f, 0.0f }, { 0.0f, 0.0f });
-	SetVertex({  5, 10, 0 }, { 0.0f, 0.0f, -1.0f }, GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), { 0.0f, 0.0f }, { 0.0f, 0.0f });
-	SetVertex({ -5,  5, 0 }, { 0.0f, 0.0f, -1.0f }, GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), { 1.0f, 1.0f }, { 0.0f, 0.0f });
+	//右上
+	SetVertex({  5, 10, 0 }, { 0.0f, 0.0f, -1.0f }, GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), { 1.0f, 0.0f }, { 0.0f, 0.0f });
+	//左下
+	SetVertex({ -5,  5, 0 }, { 0.0f, 0.0f, -1.0f }, GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), { 0.0f, 1.0f }, { 0.0f, 0.0f });
+	//右下
 	SetVertex({  5,  5, 0 }, { 0.0f, 0.0f, -1.0f }, GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), { 1.0f, 1.0f }, { 0.0f, 0.0f });
 }
 
