@@ -2,6 +2,7 @@
 #include "Vector3.h"
 #include <memory>
 #include <list>
+#include <string>
 
 class Cube;
 
@@ -29,6 +30,9 @@ public:
 
 	// キューブの生成
 	void CreateCube(const Vec3f& pos, const Vec3f& size);
+
+	// キューブの状態のセット
+	void SetMode(std::string mode);
 
 
 private:

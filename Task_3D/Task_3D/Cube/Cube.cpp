@@ -202,6 +202,9 @@ void Cube::Move(void)
 	{
 		return;
 	}
+
+	angle = 1.0f;
+	move.x = 0.1f;
 }
 
 // É[Éç

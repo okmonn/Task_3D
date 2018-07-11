@@ -59,6 +59,15 @@ void CubeMane::CreateCube(const Vec3f & pos, const Vec3f & size)
 	cube.push_back(std::make_shared<Cube>(pos, size));
 }
 
+// キューブの状態のセット
+void CubeMane::SetMode(std::string mode)
+{
+	for (auto itr = cube.begin(); itr != cube.end(); ++itr)
+	{
+		(*itr)->SetMode(mode);
+	}
+}
+
 // リセット
 void CubeMane::Reset(void)
 {
