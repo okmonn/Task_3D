@@ -1,10 +1,11 @@
 #include "Play.h"
 #include "../Game.h"
+#include "../CubeMane.h"
 #include "../Input.h"
-#include "../Cube/Cube.h"
 #include "../Player/Player.h"
 #include "../Loading/Loading.h"
 #include "../Typedef.h"
+#include "DxLib.h"
 
 #define ALPHA_MAX 255
 
@@ -22,12 +23,14 @@ Play::Play(std::weak_ptr<Input>in)
 // デストラクタ
 Play::~Play()
 {
+	CubeMane::Destroy();
 }
 
 // クラスの生成
 void Play::Create(void)
 {
-	cube.reset(new Cube());
+	CubeMane::Create();
+	CubeMane::Get()->CreateCube({ 0.0f, 10.0f, 0.0f }, { 5.0f, 5.0f, 5.0f });
 	pl.reset(new Player(in));
 	load.reset(new Loading(pl));
 }
@@ -41,7 +44,7 @@ void Play::Draw(void)
 	}
 	else
 	{
-		cube->Draw();
+		CubeMane::Get()->Draw();
 		pl->Draw();
 	}
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
@@ -89,6 +92,6 @@ void Play::Run(void)
 		return;
 	}
 
-	cube->UpData();
+	CubeMane::Get()->UpData();
 	pl->UpData();
 }

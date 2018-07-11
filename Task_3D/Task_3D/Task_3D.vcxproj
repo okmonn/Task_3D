@@ -132,6 +132,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CubeMane.cpp" />
     <ClCompile Include="Cube\Cube.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Input.cpp" />
@@ -146,6 +147,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="CubeMane.h" />
     <ClInclude Include="Cube\Cube.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Icon\Icon.h" />
