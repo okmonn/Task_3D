@@ -2,7 +2,7 @@
 #include "../Load.h"
 #include "../Typedef.h"
 
-/* wait, move, delete */
+/* wait, move, moved, delete */
 
 // コンストラクタ
 Cube::Cube(const Vec3f& pos, const Vec3f& size) : pos(pos), size(size)
@@ -10,12 +10,16 @@ Cube::Cube(const Vec3f& pos, const Vec3f& size) : pos(pos), size(size)
 	Reset();
 
 	image = Load::Get()->LoadImg("img/cube_tex.png");
+	fulcrum = this->pos;
 	angle = 0.0f;
 	move = 0.0f;
 	mode = "wait";
+	material = {};
+	rotate = MGetRotY(angle);
 
 	func = &Cube::Wait;
 
+	SetMaterialParam(GetColorF(0.2f, 0.2f, 0.2f, 1.0f), GetColorF(0.75f, 0.75f, 0.75f, 1.0f), GetColorF(1.0f, 1.0f, 1.0f, 1.0f), GetColorF(0.2f, 0.2f, 0.2f, 1.0f), 10.0f);
 	VertexInit();
 	IndexInit();
 }
@@ -27,7 +31,7 @@ Cube::~Cube()
 }
 
 // 状態のセット
-void Cube::SetMode(std::string mode, const Vec3f & move, float angle)
+void Cube::SetMode(std::string mode, const Vec3f & move, float angle, const MATRIX& rotate)
 {
 	if (this->mode != mode)
 	{
@@ -36,6 +40,7 @@ void Cube::SetMode(std::string mode, const Vec3f & move, float angle)
 
 	SetMove(move);
 	SetAngle(angle);
+	SetRotate(rotate);
 }
 
 // 描画
@@ -53,6 +58,16 @@ void Cube::Draw(void)
 	int n = DrawPolygonIndexed3D(vertex.data(), (int)vertex.size(), index.data(), (int)vertex.size() / 2, image, true);
 }
 
+// マテリアルパラメータの設定
+void Cube::SetMaterialParam(const COLOR_F & ambient, const COLOR_F & diffuse, const COLOR_F & specular, const COLOR_F & emissive, float power)
+{
+	material.Ambient = ambient;
+	material.Diffuse = diffuse;
+	material.Specular = specular;
+	material.Emissive = emissive;
+	material.Power = power;
+	DxLib::SetMaterialParam(material);
+}
 
 // 頂点のセット
 void Cube::SetVertex(const Vec3f & pos, const Vec3f & normal, const COLOR_U8 & diffuse, const COLOR_U8 & specular, const Vec2f & uv, const Vec2f & subuv)
@@ -86,45 +101,22 @@ void Cube::VertexInit(void)
 	//奥座標
 	float back = pos.z + size.z / 2.0f;
 
-	//手前
-	//左上
-	SetVertex({ left,  up,   front }, { 0.0f, 0.0f, -1.0f }, GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), { 0.0f, 0.0f }, { 0.0f, 0.0f });
-	//右上
-	SetVertex({ right, up,   front }, { 0.0f, 0.0f, -1.0f }, GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), { 1.0f, 0.0f }, { 0.0f, 0.0f });
-	//左下
-	SetVertex({ left,  down, front }, { 0.0f, 0.0f, -1.0f }, GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), { 0.0f, 1.0f }, { 0.0f, 0.0f });
-	//右下
-	SetVertex({ right, down, front }, { 0.0f, 0.0f, -1.0f }, GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), { 1.0f, 1.0f }, { 0.0f, 0.0f });
-	
-	//左
-	//左上
-	SetVertex({ left, up, back    }, { 0.0f, 0.0f, -1.0f }, GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), { 0.0f, 0.0f }, { 0.0f, 0.0f });
-	//右上
-	SetVertex({ left, up, front   }, { 0.0f, 0.0f, -1.0f }, GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), { 1.0f, 0.0f }, { 0.0f, 0.0f });
-	//左下
-	SetVertex({ left, down, back  }, { 0.0f, 0.0f, -1.0f }, GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), { 0.0f, 1.0f }, { 0.0f, 0.0f });
-	//右下
-	SetVertex({ left, down, front }, { 0.0f, 0.0f, -1.0f }, GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), { 1.0f, 1.0f }, { 0.0f, 0.0f });
+	for (int i = 0; i < 4; ++i)
+	{
+		//左上
+		SetVertex({ left,  up,   front }, { 0.0f, 0.0f, -1.0f }, GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), { 0.0f, 0.0f }, { 0.0f, 0.0f });
+		//右上
+		SetVertex({ right, up,   front }, { 0.0f, 0.0f, -1.0f }, GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), { 1.0f, 0.0f }, { 0.0f, 0.0f });
+		//左下
+		SetVertex({ left,  down, front }, { 0.0f, 0.0f, -1.0f }, GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), { 0.0f, 1.0f }, { 0.0f, 0.0f });
+		//右下
+		SetVertex({ right, down, front }, { 0.0f, 0.0f, -1.0f }, GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), { 1.0f, 1.0f }, { 0.0f, 0.0f });
 
-	//奥
-	//左上
-	SetVertex({ right, up, back   }, { 0.0f, 0.0f, -1.0f }, GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), { 0.0f, 0.0f }, { 0.0f, 0.0f });
-	//右上
-	SetVertex({ left, up, back    }, { 0.0f, 0.0f, -1.0f }, GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), { 1.0f, 0.0f }, { 0.0f, 0.0f });
-	//左下
-	SetVertex({ right, down, back }, { 0.0f, 0.0f, -1.0f }, GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), { 0.0f, 1.0f }, { 0.0f, 0.0f });
-	//右下
-	SetVertex({ left, down, back  }, { 0.0f, 0.0f, -1.0f }, GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), { 1.0f, 1.0f }, { 0.0f, 0.0f });
-
-	//右
-	//左上
-	SetVertex({ right, up, front   }, { 0.0f, 0.0f, -1.0f }, GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), { 0.0f, 0.0f }, { 0.0f, 0.0f });
-	//右上
-	SetVertex({ right, up, back    }, { 0.0f, 0.0f, -1.0f }, GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), { 1.0f, 0.0f }, { 0.0f, 0.0f });
-	//左下
-	SetVertex({ right, down, front }, { 0.0f, 0.0f, -1.0f }, GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), { 0.0f, 1.0f }, { 0.0f, 0.0f });
-	//右下
-	SetVertex({ right, down, back  }, { 0.0f, 0.0f, -1.0f }, GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), { 1.0f, 1.0f }, { 0.0f, 0.0f });
+		for (int m = 0; m < 4; ++m)
+		{
+			SetMatrix(i * 4 + m, MGetRotY(static_cast<float>(i) * DX_PI_F / 2.0f));
+		}
+	}
 
 	//上
 	//左上
@@ -193,6 +185,11 @@ void Cube::Wait(void)
 	{
 		return;
 	}
+
+	//支点を右に指定
+	fulcrum.x = pos.x + size.x / 2.0f;
+	fulcrum.y = pos.y - size.y / 2.0f;
+	fulcrum.z = pos.z;
 }
 
 // 移動
@@ -204,7 +201,17 @@ void Cube::Move(void)
 	}
 
 	angle = 1.0f;
-	move.x = 0.1f;
+	SetRotate(MGetRotY(RAD(angle)));
+	//move.x = 0.1f;
+}
+
+// 移動終了
+void Cube::Moved(void)
+{
+	if (mode != "moved")
+	{
+		return;
+	}
 }
 
 // ゼロ
@@ -225,12 +232,16 @@ void Cube::UpData(void)
 	{
 		func = &Cube::Move;
 	}
+	else if (mode == "moved")
+	{
+		func = &Cube::Moved;
+	}
 
 	(this->*func)();
 
 	for (UINT i = 0; i < vertex.size(); ++i)
 	{
-		SetMatrix(i, MMult(MGetRotY(RAD(angle)), MGetTranslate(VGet(move.x, move.y, move.z))));
+		SetMatrix(i, MMult(rotate, MGetTranslate(VGet(move.x, move.y, move.z))));
 	}
 
 	Zero();

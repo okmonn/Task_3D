@@ -14,7 +14,7 @@ public:
 	~Cube();
 
 	// 状態のセット
-	void SetMode(std::string mode, const Vec3f& move = { 0.0f, 0.0f, 0.0f }, float angle = 0.0f);
+	void SetMode(std::string mode, const Vec3f& move = { 0.0f, 0.0f, 0.0f }, float angle = 0.0f, const MATRIX& rotate = MGetRotY(0.0f));
 
 	// 描画
 	void Draw(void);
@@ -30,6 +30,15 @@ public:
 	// 中心座標のセット
 	void SetCenter(const Vec3f& vec) {
 		pos = vec;
+	}
+
+	// 支点座標の取得
+	Vec3f GetFulcrum(void) const {
+		return fulcrum;
+	}
+	// 支点座標のセット
+	void SetFulcrum(const Vec3f& fulcrum) {
+		this->fulcrum = fulcrum;
 	}
 
 	// サイズの取得
@@ -59,7 +68,19 @@ public:
 		this->move = move;
 	}
 
+	// 回転行列の取得
+	MATRIX GetRotate(void) const {
+		return rotate;
+	}
+	// 回転行列のセット
+	void SetRotate(const MATRIX& matrix) {
+		rotate = matrix;
+	}
+
 private:
+	// マテリアルパラメータの設定
+	void SetMaterialParam(const COLOR_F& ambient, const COLOR_F& diffuse, const COLOR_F& specular, const COLOR_F& emissive, float power);
+
 	// 頂点のセット
 	void SetVertex(const Vec3f& pos, const Vec3f& normal, const COLOR_U8& diffuse, const COLOR_U8& specular, const Vec2f& uv, const Vec2f& subuv);
 	void VertexInit(void);
@@ -77,6 +98,9 @@ private:
 	// 移動
 	void Move(void);
 
+	// 移動終了
+	void Moved(void);
+
 	// ゼロ
 	void Zero(void);
 
@@ -90,6 +114,9 @@ private:
 	// 中心座標
 	Vec3f pos;
 
+	// 支点座標
+	Vec3f fulcrum;
+
 	// サイズ
 	Vec3f size;
 
@@ -102,11 +129,17 @@ private:
 	// 状態
 	std::string mode;
 
+	// 回転行列
+	MATRIX rotate;
+
 	// 頂点情報
 	std::vector<VERTEX3D>vertex;
 
 	// インデックス
 	std::vector<unsigned short>index;
+
+	// マテリアルアンビエント
+	MATERIALPARAM material;
 
 	// 関数ポインタ
 	void (Cube::*func)(void);
