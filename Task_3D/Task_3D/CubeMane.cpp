@@ -47,9 +47,18 @@ void CubeMane::Draw(void)
 // ˆ—
 void CubeMane::UpData(void)
 {
-	for (auto itr = cube.begin(); itr != cube.end(); ++itr)
+	for (auto itr = cube.begin(); itr != cube.end();)
 	{
 		(*itr)->UpData();
+
+		if ((*itr)->GetDie() == true)
+		{
+			itr = cube.erase(itr);
+		}
+		else
+		{
+			++itr;
+		}
 	}
 }
 
@@ -64,7 +73,10 @@ void CubeMane::SetMode(std::string mode)
 {
 	for (auto itr = cube.begin(); itr != cube.end(); ++itr)
 	{
-		(*itr)->SetMode(mode);
+		if ((*itr)->GetMode() == "wait")
+		{
+			(*itr)->SetMode(mode);
+		}
 	}
 }
 

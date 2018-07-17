@@ -12,8 +12,9 @@ Cube::Cube(const Vec3f& pos, const Vec3f& size) : pos(pos), size(size)
 	image = Load::Get()->LoadImg("img/cube_tex.png");
 	fulcrum = this->pos;
 	angle = 0.0f;
-	move = 0.0f;
+	rotTime = 0.0f;
 	mode = "wait";
+	die = false;
 	material = {};
 	rotate = MGetRotY(angle);
 
@@ -38,7 +39,8 @@ void Cube::SetMode(std::string mode, const Vec3f & move, float angle, const MATR
 		this->mode = mode;
 	}
 
-	SetMove(move);
+	rotTime = 0.0f;
+
 	SetAngle(angle);
 	SetRotate(rotate);
 }
@@ -186,10 +188,25 @@ void Cube::Wait(void)
 		return;
 	}
 
-	//支点を右に指定
-	fulcrum.x = pos.x + size.x / 2.0f;
+	//支点を奥下に指定
+	fulcrum.x = pos.x;
 	fulcrum.y = pos.y - size.y / 2.0f;
-	fulcrum.z = pos.z;
+	fulcrum.z = pos.z + size.z / 2.0f;
+
+	//支点を前下に指定
+	/*fulcrum.x = pos.x;
+	fulcrum.y = pos.y - size.y / 2.0f;
+	fulcrum.z = pos.z - size.z / 2.0f;*/
+
+	//支点を左下に指定
+	/*fulcrum.x = pos.x - size.x / 2.0f;
+	fulcrum.y = pos.y - size.y / 2.0f;
+	fulcrum.z = pos.z;*/
+
+	//支点を右下に指定
+	/*fulcrum.x = pos.x + size.x / 2.0f;
+	fulcrum.y = pos.y - size.y / 2.0f;
+	fulcrum.z = pos.z;*/
 }
 
 // 移動
@@ -200,9 +217,16 @@ void Cube::Move(void)
 		return;
 	}
 
+	if (rotTime >= 90.0f)
+	{
+		SetMode("moved");
+		func = &Cube::Moved;
+		return;
+	}
+
 	angle = 1.0f;
-	SetRotate(MGetRotY(RAD(angle)));
-	//move.x = 0.1f;
+	SetRotate(MGetRotX(RAD(angle)));
+	rotTime+= angle;
 }
 
 // 移動終了
@@ -212,36 +236,53 @@ void Cube::Moved(void)
 	{
 		return;
 	}
+
+	//中心セット
+	pos = 0.0f;
+	for (unsigned int i = 0; i < vertex.size(); ++i)
+	{
+		pos.x += vertex[i].pos.x;
+		pos.y += vertex[i].pos.y;
+		pos.z += vertex[i].pos.z;
+	}
+	pos /= static_cast<float>(vertex.size());
+
+	SetMode("wait");
+	func = &Cube::Wait;
+}
+
+// 消去
+void Cube::Delete(void)
+{
+	if (mode != "delete")
+	{
+		SetMode("wait");
+		func = &Cube::Wait;
+		return;
+	}
+
+	die = true;
 }
 
 // ゼロ
 void Cube::Zero(void)
 {
-	SetMove({ 0.0f, 0.0f, 0.0f });
 	SetAngle(0.0f);
 }
 
 // 処理
 void Cube::UpData(void)
 {
-	if (mode == "wait")
-	{
-		func = &Cube::Wait;
-	}
-	else if (mode == "move")
+	if (mode == "move")
 	{
 		func = &Cube::Move;
-	}
-	else if (mode == "moved")
-	{
-		func = &Cube::Moved;
 	}
 
 	(this->*func)();
 
 	for (UINT i = 0; i < vertex.size(); ++i)
 	{
-		SetMatrix(i, MMult(rotate, MGetTranslate(VGet(move.x, move.y, move.z))));
+		SetMatrix(i, MMult(MMult(MGetTranslate(VGet(-fulcrum.x, -fulcrum.y, -fulcrum.z)), rotate), MGetTranslate(VGet(fulcrum.x, fulcrum.y, fulcrum.z))));
 	}
 
 	Zero();

@@ -59,15 +59,6 @@ public:
 		this->angle = angle;
 	}
 
-	// 移動量の取得
-	Vec3f GetMove(void) const {
-		return move;
-	}
-	// 移動量のセット
-	void SetMove(const Vec3f& move) {
-		this->move = move;
-	}
-
 	// 回転行列の取得
 	MATRIX GetRotate(void) const {
 		return rotate;
@@ -75,6 +66,20 @@ public:
 	// 回転行列のセット
 	void SetRotate(const MATRIX& matrix) {
 		rotate = matrix;
+	}
+
+	// 状態の取得
+	std::string GetMode(void) const {
+		return mode;
+	}
+
+	// 消去フラグの取得
+	bool GetDie(void) const {
+		return die;
+	}
+	// 消去フラグのセット
+	void SetDie(const bool& flag) {
+		die = flag;
 	}
 
 private:
@@ -101,6 +106,9 @@ private:
 	// 移動終了
 	void Moved(void);
 
+	// 消去
+	void Delete(void);
+
 	// ゼロ
 	void Zero(void);
 
@@ -123,11 +131,14 @@ private:
 	// 角度
 	float angle;
 
-	// 移動量
-	Vec3f move;
+	// 回転時間
+	float rotTime;
 
 	// 状態
 	std::string mode;
+
+	// 消去フラグ
+	bool die;
 
 	// 回転行列
 	MATRIX rotate;

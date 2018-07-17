@@ -95,7 +95,7 @@ void Play::Run(void)
 	CubeMane::Get()->UpData();
 	pl->UpData();
 
-	if (in.lock()->CheckPress(PAD_INPUT_1) == true)
+	if (in.lock()->CheckTrigger(PAD_INPUT_1) == true)
 	{
 		CubeMane::Get()->SetMode("move");
 	}
