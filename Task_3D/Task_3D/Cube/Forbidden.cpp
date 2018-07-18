@@ -88,9 +88,14 @@ void Forbidden::Move(void)
 		return;
 	}
 
-	angle = 1.0f;
-	SetRotate(rot);
+	//angle = 1.0f;
+	//SetRotate(rot);
 	rotTime += angle;
+
+	for (UINT i = 0; i < vertex.size(); ++i)
+	{
+		SetMatrix(i, MMult(MMult(MGetTranslate(VGet(-fulcrum.x, -fulcrum.y, -fulcrum.z)), rotate), MGetTranslate(VGet(fulcrum.x, fulcrum.y, fulcrum.z))));
+	}
 }
 
 // ˆÚ“®Œã
@@ -138,10 +143,5 @@ void Forbidden::UpData(void)
 
 	(this->*func)();
 
-	for (UINT i = 0; i < vertex.size(); ++i)
-	{
-		SetMatrix(i, MMult(MMult(MGetTranslate(VGet(-fulcrum.x, -fulcrum.y, -fulcrum.z)), rotate), MGetTranslate(VGet(fulcrum.x, fulcrum.y, fulcrum.z))));
-	}
-
-	Zero();
+	//Zero();
 }
