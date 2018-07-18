@@ -3,6 +3,7 @@
 #include <memory>
 #include <list>
 #include <string>
+#include "DxLib.h"
 
 class Cube;
 
@@ -29,10 +30,13 @@ public:
 	void UpData(void);
 
 	// キューブの生成
-	void CreateCube(const Vec3f& pos, const Vec3f& size);
+	void CreateForbidden(const Vec3f& pos, const Vec3f& size);
 
 	// キューブの状態のセット
-	void SetMode(std::string mode);
+	void SetMode(std::string mode, float angle = 1.0f, const MATRIX& matrix = MGetRotY(1.0f), const Vec3f& dir = {0.0f, -1.0f, 1.0f});
+
+	// キューブサイズの取得
+	Vec3f GetCubeSize(void) const;
 
 
 private:

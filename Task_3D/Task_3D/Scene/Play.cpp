@@ -30,7 +30,8 @@ Play::~Play()
 void Play::Create(void)
 {
 	CubeMane::Create();
-	CubeMane::Get()->CreateCube({ 0.0f, 10.0f, 0.0f }, { 5.0f, 5.0f, 5.0f });
+	CubeMane::Get()->CreateForbidden({ -20.0f, 10.0f, 0.0f }, { 5.0f, 5.0f, 5.0f });
+	CubeMane::Get()->CreateForbidden({ 20.0f, 10.0f, 0.0f }, { 5.0f, 5.0f, 5.0f });
 	pl.reset(new Player(in));
 	load.reset(new Loading(pl));
 }
@@ -96,6 +97,18 @@ void Play::Run(void)
 	pl->UpData();
 
 	if (in.lock()->CheckTrigger(PAD_INPUT_1) == true)
+	{
+		CubeMane::Get()->SetMode("move");
+	}
+	else if (in.lock()->CheckTrigger(PAD_INPUT_2) == true)
+	{
+		CubeMane::Get()->SetMode("move", 1.0f, MGetRotZ(RAD(1.0f)), {-1.0f, -1.0f, 0.0f});
+	}
+	else if (in.lock()->CheckTrigger(PAD_INPUT_3) == true)
+	{
+		CubeMane::Get()->SetMode("move");
+	}
+	else if (in.lock()->CheckTrigger(PAD_INPUT_4) == true)
 	{
 		CubeMane::Get()->SetMode("move");
 	}

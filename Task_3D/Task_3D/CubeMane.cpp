@@ -1,6 +1,6 @@
 #include "CubeMane.h"
 #include "Cube\Cube.h"
-#include "DxLib.h"
+#include "Cube\Forbidden.h"
 
 CubeMane* CubeMane::instance = nullptr;
 
@@ -63,21 +63,32 @@ void CubeMane::UpData(void)
 }
 
 // キューブの生成
-void CubeMane::CreateCube(const Vec3f & pos, const Vec3f & size)
+void CubeMane::CreateForbidden(const Vec3f & pos, const Vec3f & size)
 {
-	cube.push_back(std::make_shared<Cube>(pos, size));
+	cube.push_back(std::make_shared<Forbidden>(pos, size));
 }
 
 // キューブの状態のセット
-void CubeMane::SetMode(std::string mode)
+void CubeMane::SetMode(std::string mode, float angle, const MATRIX& matrix, const Vec3f& dir)
 {
 	for (auto itr = cube.begin(); itr != cube.end(); ++itr)
 	{
 		if ((*itr)->GetMode() == "wait")
 		{
-			(*itr)->SetMode(mode);
+			(*itr)->SetMode(mode, angle, matrix, dir);
 		}
 	}
+}
+
+// キューブサイズの取得
+Vec3f CubeMane::GetCubeSize(void) const
+{
+	if (cube.size() > 0)
+	{
+		return (*cube.begin())->GetSize();
+	}
+
+	return Vec3f(0.0f, 0.0f, 0.0f);
 }
 
 // リセット

@@ -3,24 +3,25 @@
 #include "../Vector3.h"
 #include <string>
 #include <vector>
+#include "../Typedef.h"
 #include "DxLib.h"
 
 class Cube
 {
 public:
 	// コンストラクタ
-	Cube(const Vec3f& pos, const Vec3f& size);
+	Cube();
 	// デストラクタ
-	~Cube();
+	virtual ~Cube();
 
 	// 状態のセット
-	void SetMode(std::string mode, const Vec3f& move = { 0.0f, 0.0f, 0.0f }, float angle = 0.0f, const MATRIX& rotate = MGetRotY(0.0f));
+	void SetMode(std::string mode, float angle = 1.0f, const MATRIX& rotate = MGetRotX(RAD(1.0f)), const Vec3f& dir = {0.0f, -1.0f, 1.0f});
 
 	// 描画
-	void Draw(void);
+	virtual void Draw(void) = 0;
 
 	// 処理
-	void UpData(void);
+	virtual void UpData(void) = 0;
 
 	// 中心座標の取得
 	Vec3f GetCenter(void) const
@@ -48,6 +49,15 @@ public:
 	// サイズのセット
 	void SetSize(const Vec3f& vec) {
 		size = vec;
+	}
+
+	// 移動方向の取得
+	Vec3f GetDir(void) const {
+		return dir;
+	}
+	// 移動方向のセット
+	void SetDir(const Vec3f& dir) {
+		this->dir = dir;
 	}
 
 	// 角度の取得
@@ -82,7 +92,7 @@ public:
 		die = flag;
 	}
 
-private:
+protected:
 	// マテリアルパラメータの設定
 	void SetMaterialParam(const COLOR_F& ambient, const COLOR_F& diffuse, const COLOR_F& specular, const COLOR_F& emissive, float power);
 
@@ -96,18 +106,6 @@ private:
 
 	// 行列のセット
 	void SetMatrix(unsigned int index, const MATRIX& matrix);
-
-	// 待機
-	void Wait(void);
-
-	// 移動
-	void Move(void);
-
-	// 移動終了
-	void Moved(void);
-
-	// 消去
-	void Delete(void);
 
 	// ゼロ
 	void Zero(void);
@@ -128,6 +126,9 @@ private:
 	// サイズ
 	Vec3f size;
 
+	// 移動方向
+	Vec3f dir;
+
 	// 角度
 	float angle;
 
@@ -143,6 +144,8 @@ private:
 	// 回転行列
 	MATRIX rotate;
 
+	MATRIX rot;
+
 	// 頂点情報
 	std::vector<VERTEX3D>vertex;
 
@@ -151,8 +154,5 @@ private:
 
 	// マテリアルアンビエント
 	MATERIALPARAM material;
-
-	// 関数ポインタ
-	void (Cube::*func)(void);
 };
 
