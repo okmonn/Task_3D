@@ -40,6 +40,10 @@ void Cube::SetMode(std::string mode, float angle, const MATRIX& rotate, const Ve
 	SetAngle(angle);
 	SetRotate(rotate);
 	SetDir(dir);
+
+	fulcrum.x = pos.x + (size.x / 2.0f * dir.x);
+	fulcrum.y = pos.y + (size.y / 2.0f * dir.y);
+	fulcrum.z = pos.z + (size.z / 2.0f * dir.z);
 }
 
 // マテリアルパラメータの設定

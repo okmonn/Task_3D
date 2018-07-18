@@ -48,10 +48,6 @@ void Forbidden::Wait(void)
 		return;
 	}
 
-	fulcrum.x = pos.x + (size.x / 2.0f * dir.x);
-	fulcrum.y = pos.y + (size.y / 2.0f * dir.y);
-	fulcrum.z = pos.z + (size.z / 2.0f * dir.z);
-
 	//SetMode("move");
 	//func = &Forbidden::Move;
 
@@ -87,6 +83,7 @@ void Forbidden::Move(void)
 	if (rotTime >= 90.0f)
 	{
 		SetMode("moved");
+		SetRotate(MGetRotX(RAD(0.0f)));
 		func = &Forbidden::Moved;
 		return;
 	}

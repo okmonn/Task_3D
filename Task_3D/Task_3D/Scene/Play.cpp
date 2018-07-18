@@ -98,7 +98,7 @@ void Play::Run(void)
 
 	if (in.lock()->CheckTrigger(PAD_INPUT_1) == true)
 	{
-		CubeMane::Get()->SetMode("move");
+		CubeMane::Get()->SetMode("move", 1.0f, MGetRotX(RAD(1.0f)));
 	}
 	else if (in.lock()->CheckTrigger(PAD_INPUT_2) == true)
 	{
@@ -106,10 +106,10 @@ void Play::Run(void)
 	}
 	else if (in.lock()->CheckTrigger(PAD_INPUT_3) == true)
 	{
-		CubeMane::Get()->SetMode("move");
+		CubeMane::Get()->SetMode("move", 1.0f, MGetRotZ(RAD(-1.0f)), {1.0f, -1.0f, 0.0f});
 	}
 	else if (in.lock()->CheckTrigger(PAD_INPUT_4) == true)
 	{
-		CubeMane::Get()->SetMode("move");
+		CubeMane::Get()->SetMode("move", 1.0f, MGetRotX(RAD(-1.0f)), {0.0f, -1.0f, -1.0f});
 	}
 }
