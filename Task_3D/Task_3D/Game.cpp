@@ -58,7 +58,7 @@ void Game::Init(void)
 	//標準ライトの有効
 	SetLightEnable(true);
 
-	SetTextureAddressModeUV(0, 0);
+	SetTextureAddressModeUV(DX_TEXADDRESS_WRAP, DX_TEXADDRESS_WRAP);
 
 
 	Create();
