@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "../Load.h"
+#include "../CubeMane.h"
 #include "../Input.h"
 #include "../Typedef.h"
 #include "DxLib.h"
@@ -10,6 +11,9 @@
 // 移動速度
 #define WALK_SPEED 0.5f;
 
+// モデルの半径
+#define R 1.0f
+
 // コンストラクタ
 Player::Player(std::weak_ptr<Input>in) : in(in)
 {
@@ -17,7 +21,7 @@ Player::Player(std::weak_ptr<Input>in) : in(in)
 	SetMode();
 
 	model = Load::Get()->LoadModel("model/PPK/ポプ子.pmx");
-	pos = 0.0f;
+	pos = 0.0f + R;
 	lpos = pos;
 	scale = 1.0f;
 	angle = 0.0f;
@@ -160,25 +164,38 @@ void Player::Wait(void)
 // 歩き
 void Player::Walk(void)
 {
+	Vec3f stage = CubeMane::Get()->GetFoundationSize();
 	if (in.lock()->CheckPress(PAD_INPUT_RIGHT) == true)
 	{
 		angle = 270.0f;
-		pos.x += speed;
+		if (pos.x + R < stage.x / 2)
+		{
+			pos.x += speed;
+		}
 	}
 	else if (in.lock()->CheckPress(PAD_INPUT_LEFT) == true)
 	{
 		angle = 90.0f;
-		pos.x -= speed;
+		if (pos.x - R > -stage.x / 2)
+		{
+			pos.x -= speed;
+		}
 	}
 	else if (in.lock()->CheckPress(PAD_INPUT_UP) == true)
 	{
 		angle = 180.0f;
-		pos.z += speed;
+		if (pos.z + R < stage.z)
+		{
+			pos.z += speed;
+		}
 	}
 	else if (in.lock()->CheckPress(PAD_INPUT_DOWN) == true)
 	{
 		angle = 0.0f;
-		pos.z -= speed;
+		if (pos.z - R > 0)
+		{
+			pos.z -= speed;
+		}
 	}
 	else 
 	{

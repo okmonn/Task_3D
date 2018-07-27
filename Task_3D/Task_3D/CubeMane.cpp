@@ -99,6 +99,12 @@ Vec3f CubeMane::GetCubeSize(void) const
 	return Vec3f(0.0f, 0.0f, 0.0f);
 }
 
+// キューブサイズの取得
+Vec3f CubeMane::GetFoundationSize(void) const
+{
+	return foundation->GetSize();
+}
+
 // リセット
 void CubeMane::Reset(void)
 {

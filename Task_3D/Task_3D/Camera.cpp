@@ -15,7 +15,7 @@ Camera::Camera()
 	min = 0.0f;
 	max = 0.0f;
 
-	SetCamera({ 0.0f, 15.0f, -25.0f }, { 0.0f, 10.0f, 0.0f }, 60.0f, 0.5f, 300.0f);
+	SetCamera({ -10.0f, 25.0f, -50.0f }, { 0.0f, 10.0f, 0.0f }, 60.0f, 0.5f, 300.0f);
 }
 
 // コンストラクタ
@@ -59,5 +59,6 @@ void Camera::UpData(void)
 void Camera::UpData(std::shared_ptr<Player> pl)
 {
 	target = pl->GetPos();
-	
+	static Vec3f tmp = target - pos;
+	pos = target - tmp;
 }

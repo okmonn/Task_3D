@@ -32,12 +32,16 @@ void Play::Create(void)
 {
 	CubeMane::Create();
 	Vec3f size(10.0f);
-	CubeMane::Get()->CreateFoundation({-10.0f, 10.0f, 60.0f}, { size.x * 4, size.y * 5, size.z * 10 });
+	CubeMane::Get()->CreateFoundation({ size.x * 4 / 2 - size.x * 2, -size.y * 5 / 2, size.z * 10 / 2 }, { size.x * 4, size.y * 5, size.z * 10 });
 	
-	CubeMane::Get()->CreateForbidden({ -20.0f, 10.0f, 0.0f }, size);
-	CubeMane::Get()->CreateForbidden({ -10.0f, 10.0f, 0.0f }, size);
-	CubeMane::Get()->CreateForbidden({ -0.0f, 10.0f, 0.0f }, size);
-	CubeMane::Get()->CreateForbidden({ 10.0f, 10.0f, 0.0f }, size);
+	for (int z = 9; z > 10 - 4; --z)
+	{
+		for (int i = 0; i < 4; ++i)
+		{
+			CubeMane::Get()->CreateForbidden({ -size.x / 2 + size.x * (i - 1), size.y / 2, size.z / 2 + size.z * z }, size);
+		}
+	}
+	
 	pl.reset(new Player(in));
 	load.reset(new Loading(pl));
 }

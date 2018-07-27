@@ -92,6 +92,16 @@ public:
 		die = flag;
 	}
 
+	int GetX(void) const {
+		return x;
+	}
+	int GetY(void) const {
+		return y;
+	}
+	int GetZ(void) const {
+		return z;
+	}
+
 protected:
 	// マテリアルパラメータの設定
 	void SetMaterialParam(const COLOR_F& ambient, const COLOR_F& diffuse, const COLOR_F& specular, const COLOR_F& emissive, float power);

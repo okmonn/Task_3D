@@ -195,7 +195,7 @@ void Cube::SetMatrix(unsigned int index, const MATRIX & matrix)
 	auto pos = vertex[index].pos;
 	auto norm = vertex[index].norm;
 	vertex[index].pos = VTransform(pos, matrix);
-	vertex[index].norm = VTransformSR(norm, matrix);
+	//vertex[index].norm = VTransformSR(norm, matrix);
 }
 
 // É[Éç

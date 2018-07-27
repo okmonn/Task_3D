@@ -28,15 +28,6 @@ Forbidden::~Forbidden()
 // •`‰æ
 void Forbidden::Draw(void)
 {
-	for (UINT z = 0; z < 10; ++z)
-	{
-		for (UINT x = 0; x < 10; ++x)
-		{
-			float y = (z % 2 == 0 && x % 2 == 0) ? -0.5f : 1.0f;
-			DrawCube3D(VGet(x * 5.0f - 5.0f * 5, y, z * 5.0f - 5.0f * 2), VGet(x * 5.0f + 5.0f - 5.0f * 5, y - 1.0f, z * 5.0f + 5.0f - 5.0f * 2), GetColor(255, 255, 0), 0xffffff, true);
-		}
-	}
-
 	int n = DrawPolygonIndexed3D(vertex.data(), (int)vertex.size(), index.data(), (int)vertex.size() / 2, image, true);
 }
 

@@ -38,6 +38,7 @@ public:
 
 	// キューブサイズの取得
 	Vec3f GetCubeSize(void) const;
+	Vec3f GetFoundationSize(void) const;
 
 
 private:
