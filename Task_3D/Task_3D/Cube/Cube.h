@@ -154,5 +154,9 @@ protected:
 
 	// マテリアルアンビエント
 	MATERIALPARAM material;
+
+	int x;
+	int y;
+	int z;
 };
 

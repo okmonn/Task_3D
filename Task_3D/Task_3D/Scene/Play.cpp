@@ -2,6 +2,7 @@
 #include "../Game.h"
 #include "../CubeMane.h"
 #include "../Input.h"
+#include "../Camera.h"
 #include "../Player/Player.h"
 #include "../Loading/Loading.h"
 #include "../Typedef.h"
@@ -30,8 +31,13 @@ Play::~Play()
 void Play::Create(void)
 {
 	CubeMane::Create();
-	CubeMane::Get()->CreateForbidden({ -20.0f, 10.0f, 0.0f }, { 5.0f, 5.0f, 5.0f });
-	CubeMane::Get()->CreateForbidden({ 20.0f, 10.0f, 0.0f }, { 5.0f, 5.0f, 5.0f });
+	Vec3f size(10.0f);
+	CubeMane::Get()->CreateFoundation({-10.0f, 10.0f, 60.0f}, { size.x * 4, size.y * 5, size.z * 10 });
+	
+	CubeMane::Get()->CreateForbidden({ -20.0f, 10.0f, 0.0f }, size);
+	CubeMane::Get()->CreateForbidden({ -10.0f, 10.0f, 0.0f }, size);
+	CubeMane::Get()->CreateForbidden({ -0.0f, 10.0f, 0.0f }, size);
+	CubeMane::Get()->CreateForbidden({ 10.0f, 10.0f, 0.0f }, size);
 	pl.reset(new Player(in));
 	load.reset(new Loading(pl));
 }
@@ -95,6 +101,7 @@ void Play::Run(void)
 
 	CubeMane::Get()->UpData();
 	pl->UpData();
+	Camera::UpData(pl);
 
 	if (in.lock()->CheckTrigger(PAD_INPUT_1) == true)
 	{

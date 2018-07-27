@@ -72,6 +72,9 @@
     <ClCompile Include="Cube\Forbidden.cpp">
       <Filter>Cube</Filter>
     </ClCompile>
+    <ClCompile Include="Cube\Foundation.cpp">
+      <Filter>Cube</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -123,6 +126,9 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Cube\Forbidden.h">
+      <Filter>Cube</Filter>
+    </ClInclude>
+    <ClInclude Include="Cube\Foundation.h">
       <Filter>Cube</Filter>
     </ClInclude>
   </ItemGroup>

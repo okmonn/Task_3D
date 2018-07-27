@@ -135,6 +135,7 @@
     <ClCompile Include="CubeMane.cpp" />
     <ClCompile Include="Cube\Cube.cpp" />
     <ClCompile Include="Cube\Forbidden.cpp" />
+    <ClCompile Include="Cube\Foundation.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Light\Light.cpp" />
@@ -151,6 +152,7 @@
     <ClInclude Include="CubeMane.h" />
     <ClInclude Include="Cube\Cube.h" />
     <ClInclude Include="Cube\Forbidden.h" />
+    <ClInclude Include="Cube\Foundation.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Icon\Icon.h" />
     <ClInclude Include="Input.h" />

@@ -1,7 +1,11 @@
 #include "Camera.h"
 #include "Input.h"
+#include "Player\Player.h"
 #include "Typedef.h"
 #include "DxLib.h"
+
+Vec3f Camera::pos = 0.0f;
+Vec3f Camera::target = 0.0f;
 
 // コンストラクタ
 Camera::Camera()
@@ -49,4 +53,11 @@ void Camera::UpData(void)
 	SetupCamera_Perspective(RAD(fov));
 	//カメラのニアファーのセット
 	SetCameraNearFar(min, max);
+}
+
+// 処理
+void Camera::UpData(std::shared_ptr<Player> pl)
+{
+	target = pl->GetPos();
+	
 }

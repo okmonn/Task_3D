@@ -3,6 +3,7 @@
 #include <memory>
 
 class Input;
+class Player;
 
 class Camera
 {
@@ -18,6 +19,12 @@ public:
 
 	// 処理
 	void UpData(void);
+	static void UpData(std::shared_ptr<Player>pl);
+
+	// プレイヤーのセット
+	static void SetPlayer(std::shared_ptr<Player>player) {
+		pl = player;
+	}
 
 	// 座標の取得
 	Vec3f GetPos(void) const {
@@ -74,11 +81,14 @@ private:
 	// インプット
 	std::weak_ptr<Input>in;
 
+	// プレイヤー
+	static std::weak_ptr<Player>pl;
+
 	// 座標
-	Vec3f pos;
+	static Vec3f pos;
 
 	// ターゲット
-	Vec3f target;
+	static Vec3f target;
 
 	// 角度
 	float fov;

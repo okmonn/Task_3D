@@ -21,6 +21,8 @@ public:
 	// コンストラクタ
 	constexpr Vector3(T x, T y, T z) : x(x), y(y), z(z) {
 	};
+	constexpr Vector3(T i) : x(i), y(i), z(i) {
+	}
 
 	// ベクトルの長さ
 	T Length(void) const {

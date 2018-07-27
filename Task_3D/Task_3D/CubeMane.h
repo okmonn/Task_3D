@@ -31,6 +31,7 @@ public:
 
 	// キューブの生成
 	void CreateForbidden(const Vec3f& pos, const Vec3f& size);
+	void CreateFoundation(const Vec3f& pos, const Vec3f& size, int x = 4, int y = 5, int z = 10);
 
 	// キューブの状態のセット
 	void SetMode(std::string mode, float angle = 1.0f, const MATRIX& matrix = MGetRotY(1.0f), const Vec3f& dir = {0.0f, -1.0f, 1.0f});
@@ -56,5 +57,7 @@ private:
 
 	// キューブリスト
 	std::list<std::shared_ptr<Cube>>cube;
+
+	std::shared_ptr<Cube>foundation;
 };
 

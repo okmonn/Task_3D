@@ -1,6 +1,7 @@
 #include "CubeMane.h"
 #include "Cube\Cube.h"
 #include "Cube\Forbidden.h"
+#include "Cube\Foundation.h"
 
 CubeMane* CubeMane::instance = nullptr;
 
@@ -42,6 +43,7 @@ void CubeMane::Draw(void)
 	{
 		(*itr)->Draw();
 	}
+	foundation->Draw();
 }
 
 // 処理
@@ -66,6 +68,12 @@ void CubeMane::UpData(void)
 void CubeMane::CreateForbidden(const Vec3f & pos, const Vec3f & size)
 {
 	cube.push_back(std::make_shared<Forbidden>(pos, size));
+}
+
+// キューブの生成
+void CubeMane::CreateFoundation(const Vec3f & pos, const Vec3f & size, int x, int y, int z)
+{
+	foundation.reset(new Foundation(pos, size, x, y, z));
 }
 
 // キューブの状態のセット
