@@ -52,6 +52,11 @@ void Play::Draw(void)
 	if (load->GetFlag() == false)
 	{
 		load->Draw();
+
+		DrawString(250, 250, "Wキー：前回転", GetColor(255, 255, 255));
+		DrawString(250, 300, "Sキー：後回転", GetColor(255, 255, 255));
+		DrawString(250, 350, "Aキー：左回転", GetColor(255, 255, 255));
+		DrawString(250, 400, "Dキー：右回転", GetColor(255, 255, 255));
 	}
 	else
 	{
@@ -107,19 +112,19 @@ void Play::Run(void)
 	pl->UpData();
 	Camera::UpData(pl);
 
-	if (in.lock()->CheckTrigger(PAD_INPUT_1) == true)
+	if (in.lock()->CheckTrigger(PAD_INPUT_8) == true)
 	{
 		CubeMane::Get()->SetMode("move", 1.0f, MGetRotX(RAD(1.0f)));
 	}
-	else if (in.lock()->CheckTrigger(PAD_INPUT_2) == true)
+	else if (in.lock()->CheckTrigger(PAD_INPUT_4) == true)
 	{
 		CubeMane::Get()->SetMode("move", 1.0f, MGetRotZ(RAD(1.0f)), {-1.0f, -1.0f, 0.0f});
 	}
-	else if (in.lock()->CheckTrigger(PAD_INPUT_3) == true)
+	else if (in.lock()->CheckTrigger(PAD_INPUT_6) == true)
 	{
 		CubeMane::Get()->SetMode("move", 1.0f, MGetRotZ(RAD(-1.0f)), {1.0f, -1.0f, 0.0f});
 	}
-	else if (in.lock()->CheckTrigger(PAD_INPUT_4) == true)
+	else if (in.lock()->CheckTrigger(PAD_INPUT_5) == true)
 	{
 		CubeMane::Get()->SetMode("move", 1.0f, MGetRotX(RAD(-1.0f)), {0.0f, -1.0f, -1.0f});
 	}

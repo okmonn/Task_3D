@@ -60,6 +60,10 @@ void Game::Init(void)
 
 	SetTextureAddressModeUV(DX_TEXADDRESS_WRAP, DX_TEXADDRESS_WRAP);
 
+	AddFontResourceEx("font/GN-Kin-iro_SansSerif.ttf", FR_PRIVATE, NULL);
+	ChangeFont("GN-きんいろサンセリフ", DX_CHARSET_DEFAULT);
+	SetFontSize(36);
+
 
 	Create();
 }
@@ -107,7 +111,7 @@ void Game::UpData(void)
 void Game::Accept(void)
 {
 	//ループ処理
-	while (ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_RETURN) == 0)
+	while (ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0)
 	{
 		UpData();
 	}

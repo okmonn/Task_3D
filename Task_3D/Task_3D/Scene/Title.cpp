@@ -28,6 +28,7 @@ Title::~Title()
 void Title::Draw(void)
 {
 	DrawRectRotaGraph(image);
+	DrawString(WINDOW_X / 2 - 64, 450, "Wキー：スタート", GetColor(255, 255, 255));
 
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
 	DrawBox({ 0, 0 }, { WINDOW_X, WINDOW_Y }, GetColor(0, 0, 0));
